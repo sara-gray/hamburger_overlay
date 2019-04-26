@@ -1,0 +1,107 @@
+.menu-wrap {
+  // Position: fixed stops the menu on the overlay from scrolling and the menu-wrap covers everything including the overlay
+  position: fixed;
+
+  // Change Hamburger position here
+  top: 200px;
+  right: 100px;
+  z-index: 1;
+
+  // Build the invisible checkbox in top left
+  .toggler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    // On top but invisible
+    z-index: 2;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    // Allows us to check the state checked without seeing it
+    opacity: 0;
+  }
+
+  // Build the hamburger outside wrapper in top left, underneath checkbox
+  .hamburger {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    width: 60px;
+    height: 60px;
+    padding: 1rem;
+    background: $primary-color;
+
+    // Making the div inside the hamburger a flex so we can build the lines of the hamburger
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Build the first hamburger line - middle
+    div {
+      // Relative to the top left of the hamurger outside wrapper
+      position: relative;
+      // Flex: none; It is fully inflexible: it neither shrinks nor grows in relation to the flex container.
+      flex: none;
+      width: 100%;
+      // Height of the line
+      height: 2px;
+      // Line colour is white
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // The transition comes into effect when the hamburger changes to/from an cross
+      transition: all 0.4s ease;
+
+      // Insert top and bottom lines before and after the hamburger middle line div
+      &::before,
+      &::after {
+        // Needed for before/after pseudo selector
+        content: "";
+        // Position absolute to the relative div above, the middle line
+        position: absolute;
+        z-index: 1;
+        top: -10px;
+        width: 100%;
+        height: 2px;
+        background: inherit;
+      }
+
+      &::after {
+        // Moves the bottom line down
+        top: 10px;
+      }
+    }
+  }
+
+  // Changes hamburger state on checked state
+  .toggler:checked {
+    // targets the next sibling that is hamburger outer wrapper
+    + .hamburger {
+      // and changes the inside div (the lines)
+      div {
+        // rotate all 3 lines
+        transform: rotate(135deg);
+
+        // rotates the top and bottom lines to form a cross
+        &::before,
+        &::after {
+          top: 0;
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+    // If checked and hovering on the hamburger
+    &:hover {
+      + .hamburger {
+        div {
+          // Spin the cross
+          transform: rotate(225deg);
+        }
+      }
+    }
+  }
+}
