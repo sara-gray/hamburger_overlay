@@ -3,8 +3,8 @@
   position: fixed;
 
   // Change Hamburger position here
-  top: 200px;
-  right: 100px;
+  top: 0px;
+  left: 0px;
   z-index: 1;
 
   // Build the invisible checkbox in top left
@@ -31,7 +31,7 @@
     width: 60px;
     height: 60px;
     padding: 1rem;
-    background: $primary-color;
+    background: $ham-bg-colour;
 
     // Making the div inside the hamburger a flex so we can build the lines of the hamburger
     display: flex;
@@ -48,7 +48,7 @@
       // Height of the line
       height: 2px;
       // Line colour is white
-      background: #fff;
+      background: $ham-txt-colour;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -96,10 +96,104 @@
 
     // If checked and hovering on the hamburger
     &:hover {
+      // targets the next sibling that is hamburger outer wrapper
       + .hamburger {
+        // and changes the inside div (the lines)
         div {
           // Spin the cross
           transform: rotate(225deg);
+        }
+      }
+    }
+
+    // A ~ B Any element matching B that is one of the next siblings of an element matching A (that is, one of the next children of the same parent).
+
+    // Change the menu when the toggler is checked. This works because the classes of menu and toggler are siblings, sharing the same parent but next to each other (children of the same parent)
+    ~ .menu {
+      visibility: visible;
+
+      // First div, zoom in the overlay
+      div {
+        transform: scale(1);
+        transition-duration: $menu-speed;
+
+        // Second div, display the menu items
+        div {
+          opacity: 1;
+          transition: opacity 0.4s ease 0.4s;
+        }
+      }
+    }
+  }
+
+  // Styling the menu
+  .menu {
+    // position: fixed to cover the whole viewport
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    // Visibility set to hidden until selected
+    visibility: hidden;
+
+    // Smack bang in the middle of the viewport
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // First div in the menu markup is the overlay that zooms in/out on clicking the hamburger icon
+    div {
+      background: $ham-overlay;
+      // Make it a circle
+      border-radius: 50%;
+
+      // Extend the overlay way beyond the viewport
+      width: 200vw;
+      height: 200vw;
+
+      display: flex;
+      // Flex: none; It is fully inflexible: it neither shrinks nor grows in relation to the flex container.
+      flex: none;
+      align-items: center;
+      justify-content: center;
+
+      // Transition to zoom in
+      transform: scale(0);
+      transition: all 0.4s ease;
+
+      // Second div is for formatting the menu items and allowing a delay to after the overlay
+      div {
+        background: none;
+        text-align: center;
+
+        // Constrain to within 90vw within the overlay
+        max-width: 90vw;
+        max-height: 100vh;
+
+        // Nothing should show at the start
+        opacity: 0;
+        transition: opacity 0.4s ease;
+
+        ul {
+          li {
+            list-style: none;
+            color: $menu-text-colour;
+            font-size: 1.5rem;
+            padding: 1rem;
+
+            a {
+              color: inherit;
+              text-decoration: none;
+              transition: color 0.4s ease;
+
+              &:hover {
+                color: $menu-highlight;
+              }
+            }
+          }
         }
       }
     }
